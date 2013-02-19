@@ -155,6 +155,10 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)addInternalConstraints:(NSMutableArray *)constraints
 {
+	if (constraints == self.internalConstraints)
+	{
+		return;
+	}
 	if (self.internalConstraints)
 	{
 		[self removeConstraints:self.internalConstraints];
@@ -177,7 +181,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
     NSArray *views = [self subviews];
     NSInteger numberOfViews = [views count];
 
-    CGFloat spaceForAllDividers = [self handleWidth] * (numberOfViews - 1);
+    CGFloat spaceForAllDividers = self.handleWidth * (numberOfViews - 1);
     CGFloat spaceForAllViews;
 	if (self.orientation == ALSplitViewOrientationVertical)
 	{
@@ -202,26 +206,26 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 			percentOfTotalSpace = NSWidth([currentView frame]) / spaceForAllViews;
 		}
 
-        NSLayoutConstraint *heightConstraint;
+        NSLayoutConstraint *newConstraint;
 		if (self.orientation == ALSplitViewOrientationVertical)
 		{
-			heightConstraint = [NSLayoutConstraint constraintWithItem:currentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:percentOfTotalSpace constant:-spaceForAllDividers * percentOfTotalSpace];
+			newConstraint = [NSLayoutConstraint constraintWithItem:currentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:percentOfTotalSpace constant:-spaceForAllDividers * percentOfTotalSpace];
 		}
 		else
 		{
-			heightConstraint = [NSLayoutConstraint constraintWithItem:currentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:percentOfTotalSpace constant:-spaceForAllDividers * percentOfTotalSpace];
+			newConstraint = [NSLayoutConstraint constraintWithItem:currentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:percentOfTotalSpace constant:-spaceForAllDividers * percentOfTotalSpace];
 		}
 
         if (handleIndex == -2)
 		{
-            [heightConstraint setPriority:NSLayoutPriorityDefaultLow];
+            [newConstraint setPriority:NSLayoutPriorityDefaultLow];
         }
 		else
 		{
-            [heightConstraint setPriority:NSLayoutPriorityDefaultLow + priorityIncrement * distanceOfViewWithIndexFromDividerWithIndex(i, handleIndex)];
+            [newConstraint setPriority:NSLayoutPriorityDefaultLow + priorityIncrement * distanceOfViewWithIndexFromDividerWithIndex(i, handleIndex)];
         }
 
-        [constraints addObject:heightConstraint];
+        [constraints addObject:newConstraint];
     }
 
 	[self addSizingConstrants:constraints];
@@ -229,6 +233,10 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)addSizingConstrants:(NSMutableArray *)constraints
 {
+	if (self.sizingConstraints == constraints)
+	{
+		return;
+	}
 	if (self.sizingConstraints)
 	{
 		[self removeConstraints:self.sizingConstraints];
@@ -293,7 +301,14 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 - (void)updateConstraints
 {
 	[super updateConstraints];
-	[self updateInternalConstraints];
+	if (!self.internalConstraints)
+	{
+		[self updateInternalConstraints];
+	}
+	if (!self.sizingConstraints)
+	{
+		[self updateSizingContstraintsForHandleIndex:-2];
+	}
 }
 
 - (void)didAddSubview:(NSView *)subview
@@ -323,15 +338,15 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		NSView *viewAboveDivider = [self subviews][handleIndex];
 		if (self.orientation == ALSplitViewOrientationVertical)
 		{
-			self.draggingConstraint = [[[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewAboveDivider]-100-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewAboveDivider)] lastObject] retain];
-			self.draggingConstraint.constant = location.y + [self handleWidth] / 2.f;
+			self.draggingConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewAboveDivider]-100-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewAboveDivider)] lastObject];
+			self.draggingConstraint.constant = location.y + self.handleWidth / 2.f;
 		}
 		else
 		{
-			self.draggingConstraint = [[[NSLayoutConstraint constraintsWithVisualFormat:@"H:[viewAboveDivider]-100-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewAboveDivider)] lastObject] retain];
-			[self.draggingConstraint setConstant:(self.frame.size.width - location.x + [self handleWidth] / 2.f)];
+			self.draggingConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"H:[viewAboveDivider]-100-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewAboveDivider)] lastObject];
+			[self.draggingConstraint setConstant:(self.frame.size.width - location.x + self.handleWidth / 2.f)];
 		}
-		[self.draggingConstraint setPriority:NSLayoutPriorityDefaultHigh];
+		[self.draggingConstraint setPriority:NSLayoutPriorityDragThatCannotResizeWindow];
 
 		[self addConstraint:self.draggingConstraint];
 	}
@@ -348,11 +363,11 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
 		if (self.orientation == ALSplitViewOrientationVertical)
 		{
-			[self.draggingConstraint setConstant:location.y + [self handleWidth] / 2.f];
+			[self.draggingConstraint setConstant:location.y + self.handleWidth / 2.f];
 		}
 		else
 		{
-			[self.draggingConstraint setConstant:(self.frame.size.width - location.x + [self handleWidth] / 2.f)];
+			[self.draggingConstraint setConstant:(self.frame.size.width - location.x + self.handleWidth / 2.f)];
 		}
 	}
 	else
@@ -369,7 +384,6 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		self.draggingConstraint = nil;
 
 		[self updateSizingContstraintsForHandleIndex:-2];
-		[self addInternalConstraints:nil];
 	}
 	else
 	{

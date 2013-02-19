@@ -14,5 +14,6 @@
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet ALSplitView *splitView;
+@property (assign) IBOutlet NSView *imageView;
 
 @end

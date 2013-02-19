@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation AppDelegate
 
@@ -18,6 +19,9 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+	[self.imageView setWantsLayer:YES];
+	CALayer *layer = [self.imageView layer];
+	[layer setContents:[NSImage imageNamed:@"dog"]];
 }
 
 @end
