@@ -1,4 +1,4 @@
-# ALSplitView - an autolayout baset NSSplitView replacement
+# ALSplitView - an autolayout based NSSplitView replacement
 
 This custom view requires autolayout enabled in a xib it is added to.
 
