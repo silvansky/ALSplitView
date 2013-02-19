@@ -20,7 +20,13 @@
 {
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
 	[self.imageView setWantsLayer:YES];
+	[self.imageView2 setWantsLayer:YES];
+	[self.imageView3 setWantsLayer:YES];
 	CALayer *layer = [self.imageView layer];
+	[layer setContents:[NSImage imageNamed:@"dog"]];
+	layer = [self.imageView2 layer];
+	[layer setContents:[NSImage imageNamed:@"dog"]];
+	layer = [self.imageView3 layer];
 	[layer setContents:[NSImage imageNamed:@"dog"]];
 }
 

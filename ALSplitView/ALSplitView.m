@@ -164,7 +164,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		[self removeConstraints:self.internalConstraints];
 	}
 	self.internalConstraints = constraints;
-	if (constraints)
+	if (self.internalConstraints)
 	{
 		[self addConstraints:self.internalConstraints];
 	}
@@ -176,6 +176,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)updateSizingContstraintsForHandleIndex:(NSInteger)handleIndex
 {
+	//NSLog(@"updateSizingContstraintsForHandleIndex:%ld", handleIndex);
 	NSMutableArray *constraints = [NSMutableArray array];
 
     NSArray *views = [self subviews];
@@ -242,7 +243,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		[self removeConstraints:self.sizingConstraints];
 	}
 	self.sizingConstraints = constraints;
-	if (constraints)
+	if (self.sizingConstraints)
 	{
 		[self addConstraints:self.sizingConstraints];
 	}
@@ -300,6 +301,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)updateConstraints
 {
+	NSLog(@"updateConstraints");
 	[super updateConstraints];
 	if (!self.internalConstraints)
 	{
@@ -333,6 +335,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 	if (handleIndex != -1)
 	{
+		NSLog(@"mouseDown: (%f, %f), handleIndex: %ld", location.x, location.y, handleIndex);
 		[self updateSizingContstraintsForHandleIndex:handleIndex];
 
 		NSView *viewAboveDivider = [self subviews][handleIndex];
@@ -344,7 +347,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		else
 		{
 			self.draggingConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"H:[viewAboveDivider]-100-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewAboveDivider)] lastObject];
-			[self.draggingConstraint setConstant:(self.frame.size.width - location.x + self.handleWidth / 2.f)];
+			self.draggingConstraint.constant = (self.frame.size.width - location.x + self.handleWidth / 2.f);
 		}
 		[self.draggingConstraint setPriority:NSLayoutPriorityDragThatCannotResizeWindow];
 
@@ -361,14 +364,16 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	if (self.draggingConstraint)
 	{
 		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+		NSLog(@"mouseDragged: (%f, %f)", location.x, location.y);
 		if (self.orientation == ALSplitViewOrientationVertical)
 		{
-			[self.draggingConstraint setConstant:location.y + self.handleWidth / 2.f];
+			self.draggingConstraint.constant = location.y + self.handleWidth / 2.f;
 		}
 		else
 		{
-			[self.draggingConstraint setConstant:(self.frame.size.width - location.x + self.handleWidth / 2.f)];
+			self.draggingConstraint.constant = (self.frame.size.width - location.x + self.handleWidth / 2.f);
 		}
+		NSLog(@"self.draggingConstraint.constant == %f", self.draggingConstraint.constant);
 	}
 	else
 	{
@@ -380,6 +385,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 {
 	if (self.draggingConstraint)
 	{
+		NSLog(@"mouseUp");
 		[self removeConstraint:self.draggingConstraint];
 		self.draggingConstraint = nil;
 
