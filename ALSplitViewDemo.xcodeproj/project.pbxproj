@@ -13,6 +13,7 @@
 		C51E4A8016D35C2000F908C3 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C51E4A7E16D35C2000F908C3 /* Credits.rtf */; };
 		C51E4A8316D35C2000F908C3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A8216D35C2000F908C3 /* AppDelegate.m */; };
 		C51E4A8616D35C2000F908C3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C51E4A8416D35C2000F908C3 /* MainMenu.xib */; };
+		C51E4A8E16D35C4200F908C3 /* ALSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A8D16D35C4200F908C3 /* ALSplitView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		C51E4A8116D35C2000F908C3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C51E4A8216D35C2000F908C3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C51E4A8516D35C2000F908C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		C51E4A8C16D35C4200F908C3 /* ALSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALSplitView.h; path = ALSplitView/ALSplitView.h; sourceTree = "<group>"; };
+		C51E4A8D16D35C4200F908C3 /* ALSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALSplitView.m; path = ALSplitView/ALSplitView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +49,7 @@
 		C51E4A6316D35C2000F908C3 = {
 			isa = PBXGroup;
 			children = (
+				C51E4A8F16D35C4900F908C3 /* ALSplitView */,
 				C51E4A7516D35C2000F908C3 /* ALSplitViewDemo */,
 				C51E4A6E16D35C2000F908C3 /* Frameworks */,
 				C51E4A6D16D35C2000F908C3 /* Products */,
@@ -100,6 +104,15 @@
 				C51E4A7E16D35C2000F908C3 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C51E4A8F16D35C4900F908C3 /* ALSplitView */ = {
+			isa = PBXGroup;
+			children = (
+				C51E4A8C16D35C4200F908C3 /* ALSplitView.h */,
+				C51E4A8D16D35C4200F908C3 /* ALSplitView.m */,
+			);
+			name = ALSplitView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +181,7 @@
 			files = (
 				C51E4A7C16D35C2000F908C3 /* main.m in Sources */,
 				C51E4A8316D35C2000F908C3 /* AppDelegate.m in Sources */,
+				C51E4A8E16D35C4200F908C3 /* ALSplitView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
