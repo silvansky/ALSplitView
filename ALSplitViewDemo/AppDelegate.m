@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  ALSplitViewDemo
 //
-//  Created by Valentine Gorshkov on 19.02.13.
+//  Created by Valentine Silvansky on 19.02.13.
 //  Copyright (c) 2013 silvansky. All rights reserved.
 //
 
@@ -12,12 +12,12 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+	[super dealloc];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	// Insert code here to initialize your application
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
 }
 
 @end

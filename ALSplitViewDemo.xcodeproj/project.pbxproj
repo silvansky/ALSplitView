@@ -14,6 +14,8 @@
 		C51E4A8316D35C2000F908C3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A8216D35C2000F908C3 /* AppDelegate.m */; };
 		C51E4A8616D35C2000F908C3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C51E4A8416D35C2000F908C3 /* MainMenu.xib */; };
 		C51E4A8E16D35C4200F908C3 /* ALSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A8D16D35C4200F908C3 /* ALSplitView.m */; };
+		C51E4A9116D3647C00F908C3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C51E4A9016D3647C00F908C3 /* WebKit.framework */; };
+		C51E4AA916D3BBAA00F908C3 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C51E4AA816D3BBAA00F908C3 /* dog.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		C51E4A8516D35C2000F908C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		C51E4A8C16D35C4200F908C3 /* ALSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ALSplitView.h; path = ALSplitView/ALSplitView.h; sourceTree = "<group>"; };
 		C51E4A8D16D35C4200F908C3 /* ALSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALSplitView.m; path = ALSplitView/ALSplitView.m; sourceTree = "<group>"; };
+		C51E4A9016D3647C00F908C3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		C51E4AA816D3BBAA00F908C3 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C51E4A9116D3647C00F908C3 /* WebKit.framework in Frameworks */,
 				C51E4A7016D35C2000F908C3 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,6 +72,7 @@
 		C51E4A6E16D35C2000F908C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C51E4A9016D3647C00F908C3 /* WebKit.framework */,
 				C51E4A6F16D35C2000F908C3 /* Cocoa.framework */,
 				C51E4A7116D35C2000F908C3 /* Other Frameworks */,
 			);
@@ -97,6 +103,7 @@
 		C51E4A7616D35C2000F908C3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C51E4AA816D3BBAA00F908C3 /* dog.jpg */,
 				C51E4A7716D35C2000F908C3 /* ALSplitViewDemo-Info.plist */,
 				C51E4A7816D35C2000F908C3 /* InfoPlist.strings */,
 				C51E4A7B16D35C2000F908C3 /* main.m */,
@@ -169,6 +176,7 @@
 				C51E4A7A16D35C2000F908C3 /* InfoPlist.strings in Resources */,
 				C51E4A8016D35C2000F908C3 /* Credits.rtf in Resources */,
 				C51E4A8616D35C2000F908C3 /* MainMenu.xib in Resources */,
+				C51E4AA916D3BBAA00F908C3 /* dog.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +323,7 @@
 				C51E4A8B16D35C2000F908C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
