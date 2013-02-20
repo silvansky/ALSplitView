@@ -483,7 +483,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 			}
 			if (self.handleBackgroundImage)
 			{
-				[self.handleBackgroundImage drawInRect:handleRect fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.f respectFlipped:YES hints:nil];
+				[self.handleBackgroundImage drawInRect:handleRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.f respectFlipped:YES hints:nil];
 			}
 			if (self.handleImage)
 			{
@@ -491,7 +491,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 				centeredRect.origin.x = handleRect.origin.x + (handleRect.size.width - [self.handleImage size].width) / 2.f;
 				centeredRect.origin.y = handleRect.origin.y + (handleRect.size.height - [self.handleImage size].height) / 2.f;
 				centeredRect.size = self.handleImage.size;
-				[self.handleImage drawInRect:centeredRect fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.f respectFlipped:YES hints:nil];
+				[self.handleImage drawInRect:centeredRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.f respectFlipped:YES hints:nil];
 			}
 		}
 	}
