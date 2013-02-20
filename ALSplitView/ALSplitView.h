@@ -22,7 +22,7 @@ typedef enum _ALSplitViewOrientation
 @property (retain) NSColor *handleImage;
 @property (assign) CGFloat handleWidth;
 
-- (CGFloat)minimumWidthForViewAtIndex:(NSInteger)index;
 - (void)setMinimumWidth:(CGFloat)width forViewAtIndex:(NSInteger)index;
+- (void)setMaximumWidth:(CGFloat)width forViewAtIndex:(NSInteger)index;
 
 @end

@@ -30,7 +30,8 @@
 	[layer setContents:[NSImage imageNamed:@"dog"]];
 
 	[self.splitView setMinimumWidth:200.f forViewAtIndex:0];
-	[self.splitView setMinimumWidth:250.f forViewAtIndex:2];
+	[self.splitView setMinimumWidth:250.f forViewAtIndex:1];
+	[self.splitView setMaximumWidth:300.f forViewAtIndex:0];
 }
 
 @end

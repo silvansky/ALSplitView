@@ -88,6 +88,20 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	[self setNeedsUpdateConstraints:YES];
 }
 
+- (void)setMaximumWidth:(CGFloat)width forViewAtIndex:(NSInteger)index
+{
+	if (index >= [[self subviews] count])
+	{
+		NSLog(@"ALSplitView: setMaximumWidth:forViewAtIndex: index out of boundaries!");
+		return;
+	}
+	NSView *view = [self subviews][index];
+	NSDictionary *metrics = @{ @"maxWidth" : @(width) };
+	NSArray *newConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(<=maxWidth)]" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(view)];
+	[self addConstraints:newConstraints];
+	[self setNeedsUpdateConstraints:YES];
+}
+
 #pragma mark - Private
 
 - (void)updateInternalConstraints
@@ -331,6 +345,15 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)willRemoveSubview:(NSView *)subview
 {
+	NSMutableArray *constraintsToRemove = [NSMutableArray array];
+	for (NSLayoutConstraint *c in [self constraints])
+	{
+		if (([c secondItem] == subview) || ([c firstItem] == subview))
+		{
+			[constraintsToRemove addObject:c];
+		}
+	}
+	[self removeConstraints:constraintsToRemove];
 	[self addInternalConstraints:nil];
 	[super willRemoveSubview:subview];
 }
