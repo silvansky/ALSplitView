@@ -14,6 +14,13 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 }
 
 @interface ALSplitView ()
+{
+	ALSplitViewOrientation _orientation;
+	NSColor *_handleColor;
+	NSImage *_handleBackgroundImage;
+	NSImage *_handleImage;
+	CGFloat _handleWidth;
+}
 
 @property (retain) NSMutableArray *internalConstraints;
 @property (retain) NSMutableArray *sizingConstraints;
@@ -26,6 +33,8 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 - (void)addSizingConstrants:(NSMutableArray *)constraints;
 
 - (NSInteger)handleIndexForPoint:(NSPoint)point;
+- (NSInteger)numberOfHandles;
+- (NSRect)rectOfHandleAtIndex:(NSInteger)index;
 
 @end
 
@@ -63,12 +72,6 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	[super dealloc];
 }
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-	[[NSColor redColor] set];
-    NSRectFill(dirtyRect);
-}
-
 - (CGFloat)minimumWidthForViewAtIndex:(NSInteger)index
 {
 	return 0.f;
@@ -83,7 +86,16 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	}
 	NSView *view = [self subviews][index];
 	NSDictionary *metrics = @{ @"minWidth" : @(width) };
-	NSArray *newConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(>=minWidth)]" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(view)];
+	NSString *format;
+	if (self.orientation == ALSplitViewOrientationHorizontal)
+	{
+		format = @"H:[view(>=minWidth)]";
+	}
+	else
+	{
+		format = @"V:[view(>=minWidth)]";
+	}
+	NSArray *newConstraints = [NSLayoutConstraint constraintsWithVisualFormat:format options:0 metrics:metrics views:NSDictionaryOfVariableBindings(view)];
 	[self addConstraints:newConstraints];
 	[self setNeedsUpdateConstraints:YES];
 }
@@ -97,7 +109,16 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	}
 	NSView *view = [self subviews][index];
 	NSDictionary *metrics = @{ @"maxWidth" : @(width) };
-	NSArray *newConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(<=maxWidth)]" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(view)];
+	NSString *format;
+	if (self.orientation == ALSplitViewOrientationHorizontal)
+	{
+		format = @"H:[view(<=maxWidth)]";
+	}
+	else
+	{
+		format = @"V:[view(<=maxWidth)]";
+	}
+	NSArray *newConstraints = [NSLayoutConstraint constraintsWithVisualFormat:format options:0 metrics:metrics views:NSDictionaryOfVariableBindings(view)];
 	[self addConstraints:newConstraints];
 	[self setNeedsUpdateConstraints:YES];
 }
@@ -313,6 +334,171 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		}
 	}];
 	return handleIndex;
+}
+
+- (NSInteger)numberOfHandles
+{
+	return [[self subviews] count] - 1;
+}
+
+- (NSRect)rectOfHandleAtIndex:(NSInteger)index
+{
+	if (index >= [self numberOfHandles])
+	{
+		NSLog(@"ALSplitView: rectOfHandleAtIndex: index out of boundaries!");
+		return NSZeroRect;
+	}
+
+	NSRect handleRect;
+	NSView *view = [self subviews][index];
+
+	if (self.orientation == ALSplitViewOrientationHorizontal)
+	{
+		handleRect.origin.x = view.frame.origin.x + view.frame.size.width;
+		handleRect.origin.y = 0.f;
+		handleRect.size.height = self.frame.size.height;
+		handleRect.size.width = [self handleWidth];
+	}
+	else
+	{
+		handleRect.origin.x = 0.f;
+		handleRect.origin.y = view.frame.origin.y - [self handleWidth];
+		handleRect.size.height = [self handleWidth];
+		handleRect.size.width = self.frame.size.height;
+	}
+
+	return handleRect;
+}
+
+#pragma mark - Properties
+
+- (ALSplitViewOrientation)orientation
+{
+	@synchronized(self)
+	{
+		return _orientation;
+	}
+}
+
+- (void)setOrientation:(ALSplitViewOrientation)orientation
+{
+	@synchronized(self)
+	{
+		_orientation = orientation;
+		[self setNeedsDisplay:YES];
+		[self removeConstraints:[self constraints]];
+		[self addInternalConstraints:nil];
+		[self addSizingConstrants:nil];
+	}
+}
+
+- (NSColor *)handleColor
+{
+	@synchronized(self)
+	{
+		return _handleColor;
+	}
+}
+
+- (void)setHandleColor:(NSColor *)handleColor
+{
+	@synchronized(self)
+	{
+		[handleColor retain];
+		[_handleColor release];
+		_handleColor = handleColor;
+		[self setNeedsDisplay:YES];
+	}
+}
+
+- (NSImage *)handleBackgroundImage
+{
+	@synchronized(self)
+	{
+		return _handleBackgroundImage;
+	}
+}
+
+- (void)setHandleBackgroundImage:(NSImage *)handleBackgroundImage
+{
+	@synchronized(self)
+	{
+		[handleBackgroundImage retain];
+		[_handleBackgroundImage release];
+		_handleBackgroundImage = handleBackgroundImage;
+		[self setNeedsDisplay:YES];
+	}
+}
+
+- (NSImage *)handleImage
+{
+	@synchronized(self)
+	{
+		return _handleImage;
+	}
+}
+
+- (void)setHandleImage:(NSImage *)handleImage
+{
+	@synchronized(self)
+	{
+		[handleImage retain];
+		[_handleImage release];
+		_handleImage = handleImage;
+		[self setNeedsDisplay:YES];
+	}
+}
+
+- (CGFloat)handleWidth
+{
+	@synchronized(self)
+	{
+		return _handleWidth;
+	}
+}
+
+- (void)setHandleWidth:(CGFloat)handleWidth
+{
+	@synchronized(self)
+	{
+		_handleWidth = handleWidth;
+		[self addInternalConstraints:nil];
+	}
+}
+
+#pragma mark - Drawing
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+	for (NSInteger i = 0; i < [self numberOfHandles]; i++)
+	{
+		NSRect handleRect = [self rectOfHandleAtIndex:i];
+		if (NSIntersectsRect(dirtyRect, handleRect))
+		{
+			if (self.handleBackgroundImage)
+			{
+				[self.handleBackgroundImage drawInRect:handleRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.f respectFlipped:YES hints:nil];
+			}
+			else if (self.handleColor)
+			{
+				[self.handleColor set];
+				NSRectFill(handleRect);
+			}
+			else
+			{
+				[[NSColor redColor] set];
+				NSRectFill(handleRect);
+			}
+			if (self.handleImage)
+			{
+				NSRect centeredRect;
+				centeredRect.origin.x = handleRect.origin.x + (handleRect.size.width - [self.handleImage size].width) / 2.f;
+				centeredRect.origin.y = handleRect.origin.y + (handleRect.size.height - [self.handleImage size].height) / 2.f;
+				centeredRect.size = self.handleImage.size;
+				[self.handleImage drawInRect:centeredRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.f respectFlipped:YES hints:nil];
+			}
+		}
+	}
 }
 
 #pragma mark - Overrides
