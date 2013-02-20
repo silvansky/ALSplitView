@@ -26,6 +26,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 @property (retain) NSMutableArray *sizingConstraints;
 @property (retain) NSLayoutConstraint *draggingConstraint;
 @property (retain) NSMutableArray *minimumSizeConstraints;
+@property (retain) NSTrackingArea *trackingArea;
 
 - (void)updateInternalConstraints;
 - (void)addInternalConstraints:(NSMutableArray *)constraints;
@@ -35,6 +36,11 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 - (NSInteger)handleIndexForPoint:(NSPoint)point;
 - (NSInteger)numberOfHandles;
 - (NSRect)rectOfHandleAtIndex:(NSInteger)index;
+
+- (void)setResizingCursor;
+- (void)setNormalCursor;
+
+- (void)onFrameChanged:(NSNotification *)notification;
 
 @end
 
@@ -48,6 +54,9 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		self.handleWidth = 9.f;
 		self.orientation = ALSplitViewOrientationHorizontal;
 		self.minimumSizeConstraints = [NSMutableArray array];
+		self.trackingArea = [[[NSTrackingArea alloc] initWithRect:frame options:(NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways | NSTrackingInVisibleRect) owner:self userInfo:nil] autorelease];
+		[self addTrackingArea:self.trackingArea];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFrameChanged:) name:NSViewFrameDidChangeNotification object:self];
 	}
 
 	return self;
@@ -69,6 +78,8 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	self.sizingConstraints = nil;
 	self.draggingConstraint = nil;
 	self.minimumSizeConstraints = nil;
+	[self removeTrackingArea:self.trackingArea];
+	self.trackingArea = nil;
 	[super dealloc];
 }
 
@@ -370,6 +381,37 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	return handleRect;
 }
 
+- (void)setResizingCursor
+{
+	[super resetCursorRects];
+	NSCursor *newCursor;
+	if (self.orientation == ALSplitViewOrientationHorizontal)
+	{
+		newCursor = [NSCursor resizeLeftRightCursor];
+	}
+	else
+	{
+		newCursor = [NSCursor resizeUpDownCursor];
+	}
+	[self addCursorRect:[self bounds] cursor:newCursor];
+	[newCursor set];
+}
+
+- (void)setNormalCursor
+{
+	[super resetCursorRects];
+	NSCursor *newCursor = [NSCursor arrowCursor];
+	[self addCursorRect:[self bounds] cursor:newCursor];
+	[newCursor set];
+}
+
+- (void)onFrameChanged:(NSNotification *)notification
+{
+	[self removeTrackingArea:self.trackingArea];
+	self.trackingArea = [[[NSTrackingArea alloc] initWithRect:self.frame options:(NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways | NSTrackingInVisibleRect) owner:self userInfo:nil] autorelease];
+	[self addTrackingArea:self.trackingArea];
+}
+
 #pragma mark - Properties
 
 - (ALSplitViewOrientation)orientation
@@ -549,7 +591,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 	if (handleIndex != -1)
 	{
-		NSLog(@"mouseDown: (%f, %f), handleIndex: %ld", location.x, location.y, handleIndex);
+		//NSLog(@"mouseDown: (%f, %f), handleIndex: %ld", location.x, location.y, handleIndex);
 		[self updateSizingContstraintsForHandleIndex:handleIndex];
 
 		NSView *viewAboveDivider = [self subviews][handleIndex];
@@ -579,7 +621,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	if (self.draggingConstraint)
 	{
 		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		NSLog(@"mouseDragged: (%f, %f)", location.x, location.y);
+		//NSLog(@"mouseDragged: (%f, %f)", location.x, location.y);
 		if (self.orientation == ALSplitViewOrientationVertical)
 		{
 			self.draggingConstraint.constant = location.y + self.handleWidth / 2.f;
@@ -601,7 +643,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 {
 	if (self.draggingConstraint)
 	{
-		NSLog(@"mouseUp");
+		//NSLog(@"mouseUp");
 		[self removeConstraint:self.draggingConstraint];
 		self.draggingConstraint = nil;
 
@@ -612,6 +654,41 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	{
 		[super mouseUp:theEvent];
 	}
+}
+
+#pragma mark - Mouse tracking
+
+- (void)mouseMoved:(NSEvent *)theEvent
+{
+	NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+	BOOL resizingCursor = NO;
+	for (NSInteger i = 0; i < [self numberOfHandles]; i++)
+	{
+		NSRect handleRect = [self rectOfHandleAtIndex:i];
+		if (NSPointInRect(location, handleRect))
+		{
+			resizingCursor = YES;
+			break;
+		}
+	}
+	if (resizingCursor)
+	{
+		[self setResizingCursor];
+	}
+	else
+	{
+		[self setNormalCursor];
+	}
+}
+
+- (void)mouseEntered:(NSEvent *)theEvent
+{
+	[self mouseMoved:theEvent];
+}
+
+- (void)mouseExited:(NSEvent *)theEvent
+{
+	[self setNormalCursor];
 }
 
 @end

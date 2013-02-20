@@ -39,6 +39,5 @@ self.splitView.handleBackgroundImage = [NSImage imageNamed:@"handle-background"]
 
 - sometimes constraints throw strange exceptions
 - in some cases handles can stuck
-- no resizing mouse cursor on hovering handles
 - can be unpredictable if too many scrollviews added
 - size limits are lost on split view orientation changed

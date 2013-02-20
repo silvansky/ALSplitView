@@ -29,9 +29,8 @@
 	layer = [self.imageView3 layer];
 	[layer setContents:[NSImage imageNamed:@"dog"]];
 
-	self.splitView.handleColor = [NSColor greenColor];
-	self.splitView.handleWidth = 8.f;
-//	self.splitView.orientation = ALSplitViewOrientationVertical;
+	self.splitView.handleColor = [NSColor whiteColor];
+	self.splitView.handleWidth = 5.f;
 	self.splitView.handleBackgroundImage = [NSImage imageNamed:@"bg"];
 	self.splitView.handleImage = [NSImage imageNamed:@"handle"];
 
