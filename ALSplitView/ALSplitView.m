@@ -76,6 +76,15 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)setMinimumWidth:(CGFloat)width forViewAtIndex:(NSInteger)index
 {
+	if (index >= [[self subviews] count])
+	{
+		NSLog(@"ALSplitView: setMinimumWidth:forViewAtIndex: index out of boundaries!");
+		return;
+	}
+	NSView *view = [self subviews][index];
+	NSDictionary *metrics = @{ @"minWidth" : @(width) };
+	NSArray *newConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(>=minWidth)]" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(view)];
+	[self addConstraints:newConstraints];
 	[self setNeedsUpdateConstraints:YES];
 }
 
@@ -373,7 +382,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		{
 			self.draggingConstraint.constant = (self.frame.size.width - location.x + self.handleWidth / 2.f);
 		}
-		NSLog(@"self.draggingConstraint.constant == %f", self.draggingConstraint.constant);
+//		NSLog(@"self.draggingConstraint.constant == %f", self.draggingConstraint.constant);
 	}
 	else
 	{

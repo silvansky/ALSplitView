@@ -28,6 +28,9 @@
 	[layer setContents:[NSImage imageNamed:@"dog"]];
 	layer = [self.imageView3 layer];
 	[layer setContents:[NSImage imageNamed:@"dog"]];
+
+	[self.splitView setMinimumWidth:200.f forViewAtIndex:0];
+	[self.splitView setMinimumWidth:250.f forViewAtIndex:2];
 }
 
 @end
