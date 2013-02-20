@@ -17,5 +17,11 @@
 @property (assign) IBOutlet NSView *imageView;
 @property (assign) IBOutlet NSView *imageView2;
 @property (assign) IBOutlet NSView *imageView3;
+@property (assign) IBOutlet NSSegmentedControl *orientationControl;
+
+- (IBAction)onOrientation:(id)sender;
+- (IBAction)onAddView:(id)sender;
+- (IBAction)onRemoveView:(id)sender;
+- (IBAction)onAddSizeLimits:(id)sender;
 
 @end
