@@ -6,6 +6,10 @@ NSSplitView is a buggy thing when it comes to autolayout, so I've decided to wri
 
 The source code of ALSplitView is distributed under [MIT License](http://en.wikipedia.org/wiki/MIT_License). See file LICENSE for more information.
 
+![horizontal](https://github.com/silvansky/ALSplitView/blob/master/screenshot_h.png)
+
+![vertical](https://github.com/silvansky/ALSplitView/blob/master/screenshot_v.png)
+
 ## Main features:
 
 - unlimited number of subviews
