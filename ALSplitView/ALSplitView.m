@@ -364,7 +364,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		handleRect.origin.x = 0.f;
 		handleRect.origin.y = view.frame.origin.y - [self handleWidth];
 		handleRect.size.height = [self handleWidth];
-		handleRect.size.width = self.frame.size.height;
+		handleRect.size.width = self.frame.size.width;
 	}
 
 	return handleRect;
@@ -470,24 +470,20 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)drawRect:(NSRect)dirtyRect
 {
+	[super drawRect:dirtyRect];
 	for (NSInteger i = 0; i < [self numberOfHandles]; i++)
 	{
 		NSRect handleRect = [self rectOfHandleAtIndex:i];
 		if (NSIntersectsRect(dirtyRect, handleRect))
 		{
-			if (self.handleBackgroundImage)
-			{
-				[self.handleBackgroundImage drawInRect:handleRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.f respectFlipped:YES hints:nil];
-			}
-			else if (self.handleColor)
+			if (self.handleColor)
 			{
 				[self.handleColor set];
 				NSRectFill(handleRect);
 			}
-			else
+			if (self.handleBackgroundImage)
 			{
-				[[NSColor redColor] set];
-				NSRectFill(handleRect);
+				[self.handleBackgroundImage drawInRect:handleRect fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.f respectFlipped:YES hints:nil];
 			}
 			if (self.handleImage)
 			{
@@ -495,7 +491,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 				centeredRect.origin.x = handleRect.origin.x + (handleRect.size.width - [self.handleImage size].width) / 2.f;
 				centeredRect.origin.y = handleRect.origin.y + (handleRect.size.height - [self.handleImage size].height) / 2.f;
 				centeredRect.size = self.handleImage.size;
-				[self.handleImage drawInRect:centeredRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.f respectFlipped:YES hints:nil];
+				[self.handleImage drawInRect:centeredRect fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.f respectFlipped:YES hints:nil];
 			}
 		}
 	}
@@ -570,6 +566,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		[self.draggingConstraint setPriority:NSLayoutPriorityDragThatCannotResizeWindow];
 
 		[self addConstraint:self.draggingConstraint];
+		[self setNeedsDisplay:YES];
 	}
 	else
 	{
@@ -592,6 +589,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 			self.draggingConstraint.constant = (self.frame.size.width - location.x + self.handleWidth / 2.f);
 		}
 //		NSLog(@"self.draggingConstraint.constant == %f", self.draggingConstraint.constant);
+		[self setNeedsDisplay:YES];
 	}
 	else
 	{
@@ -608,6 +606,7 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		self.draggingConstraint = nil;
 
 		[self updateSizingContstraintsForHandleIndex:-2];
+		[self setNeedsDisplay:YES];
 	}
 	else
 	{

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50CFBFD16D4F07500F727C3 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = C50CFBFB16D4F07500F727C3 /* bg.png */; };
+		C50CFBFE16D4F07500F727C3 /* handle.png in Resources */ = {isa = PBXBuildFile; fileRef = C50CFBFC16D4F07500F727C3 /* handle.png */; };
 		C51E4A7016D35C2000F908C3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C51E4A6F16D35C2000F908C3 /* Cocoa.framework */; };
 		C51E4A7A16D35C2000F908C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C51E4A7816D35C2000F908C3 /* InfoPlist.strings */; };
 		C51E4A7C16D35C2000F908C3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A7B16D35C2000F908C3 /* main.m */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C50CFBFB16D4F07500F727C3 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
+		C50CFBFC16D4F07500F727C3 /* handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handle.png; sourceTree = "<group>"; };
 		C51E4A6C16D35C2000F908C3 /* ALSplitViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ALSplitViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C51E4A6F16D35C2000F908C3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C51E4A7216D35C2000F908C3 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -103,6 +107,8 @@
 		C51E4A7616D35C2000F908C3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C50CFBFB16D4F07500F727C3 /* bg.png */,
+				C50CFBFC16D4F07500F727C3 /* handle.png */,
 				C51E4AA816D3BBAA00F908C3 /* dog.jpg */,
 				C51E4A7716D35C2000F908C3 /* ALSplitViewDemo-Info.plist */,
 				C51E4A7816D35C2000F908C3 /* InfoPlist.strings */,
@@ -177,6 +183,8 @@
 				C51E4A8016D35C2000F908C3 /* Credits.rtf in Resources */,
 				C51E4A8616D35C2000F908C3 /* MainMenu.xib in Resources */,
 				C51E4AA916D3BBAA00F908C3 /* dog.jpg in Resources */,
+				C50CFBFD16D4F07500F727C3 /* bg.png in Resources */,
+				C50CFBFE16D4F07500F727C3 /* handle.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
