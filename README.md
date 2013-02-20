@@ -6,9 +6,13 @@ NSSplitView is a buggy thing when it comes to autolayout, so I've decided to wri
 
 The source code of ALSplitView is distributed under [MIT License](http://en.wikipedia.org/wiki/MIT_License). See file LICENSE for more information.
 
-![horizontal](https://github.com/silvansky/ALSplitView/blob/master/screenshot_h.png)
+Horizontal oriented:
 
-![vertical](https://github.com/silvansky/ALSplitView/blob/master/screenshot_v.png)
+![horizontal](https://raw.github.com/silvansky/ALSplitView/master/screenshot_h.png)
+
+Vertical oriented:
+
+![vertical](https://raw.github.com/silvansky/ALSplitView/master/screenshot_v.png)
 
 ## Main features:
 
