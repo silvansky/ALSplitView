@@ -34,9 +34,17 @@
 	self.splitView.handleBackgroundImage = [NSImage imageNamed:@"bg"];
 	self.splitView.handleImage = [NSImage imageNamed:@"handle"];
 
+	[self.splitView restorePositionsOfHandlesWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"splitView"]];
+
 	[self.splitView setMinimumWidth:200.f forViewAtIndex:0];
 	[self.splitView setMinimumWidth:250.f forViewAtIndex:1];
 	[self.splitView setMaximumWidth:300.f forViewAtIndex:0];
+
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+	[[NSUserDefaults standardUserDefaults] setObject:[self.splitView savePositionsOfHandles] forKey:@"splitView"];
 }
 
 - (IBAction)onOrientation:(id)sender

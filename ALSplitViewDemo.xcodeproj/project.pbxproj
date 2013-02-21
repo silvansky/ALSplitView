@@ -16,7 +16,6 @@
 		C51E4A8316D35C2000F908C3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A8216D35C2000F908C3 /* AppDelegate.m */; };
 		C51E4A8616D35C2000F908C3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C51E4A8416D35C2000F908C3 /* MainMenu.xib */; };
 		C51E4A8E16D35C4200F908C3 /* ALSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A8D16D35C4200F908C3 /* ALSplitView.m */; };
-		C51E4A9116D3647C00F908C3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C51E4A9016D3647C00F908C3 /* WebKit.framework */; };
 		C51E4AA916D3BBAA00F908C3 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C51E4AA816D3BBAA00F908C3 /* dog.jpg */; };
 /* End PBXBuildFile section */
 
@@ -47,7 +46,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C51E4A9116D3647C00F908C3 /* WebKit.framework in Frameworks */,
 				C51E4A7016D35C2000F908C3 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -5,8 +5,12 @@
 //  Created by Valentine Silvansky on 19.02.13.
 //  Copyright (c) 2013 silvansky. All rights reserved.
 //
+//  Original code stored at https://github.com/silvansky/ALSplitView
+//
 
 #import "ALSplitView.h"
+
+#define ALSPLITVIEW_DEBUG    0
 
 static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSInteger dividerIndex)
 {
@@ -92,7 +96,9 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 {
 	if (index >= [[self subviews] count])
 	{
+#if ALSPLITVIEW_DEBUG
 		NSLog(@"ALSplitView: setMinimumWidth:forViewAtIndex: index out of boundaries!");
+#endif
 		return;
 	}
 	NSView *view = [self subviews][index];
@@ -115,7 +121,10 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 {
 	if (index >= [[self subviews] count])
 	{
+#if ALSPLITVIEW_DEBUG
 		NSLog(@"ALSplitView: setMaximumWidth:forViewAtIndex: index out of boundaries!");
+
+#endif
 		return;
 	}
 	NSView *view = [self subviews][index];
@@ -132,6 +141,75 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	NSArray *newConstraints = [NSLayoutConstraint constraintsWithVisualFormat:format options:0 metrics:metrics views:NSDictionaryOfVariableBindings(view)];
 	[self addConstraints:newConstraints];
 	[self setNeedsUpdateConstraints:YES];
+}
+
+- (NSDictionary *)savePositionsOfHandles;
+{
+	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+	dict[@"handlesCount"] = @([self numberOfHandles]);
+	dict[@"orientation"] = @(self.orientation);
+	NSRect frame = self.frame;
+	dict[@"frame"] = @{ @"x" : @(frame.origin.x), @"y" : @(frame.origin.y), @"width" : @(frame.size.width), @"height" : @(frame.size.height) };
+	NSMutableArray *views = [NSMutableArray arrayWithCapacity:[self numberOfHandles] + 1];
+	for (NSInteger i = 0; i < [self numberOfHandles] + 1; i++)
+	{
+		NSView *view = [self subviews][i];
+		NSRect frame = view.frame;
+		[views addObject:@{ @"x" : @(frame.origin.x), @"y" : @(frame.origin.y), @"width" : @(frame.size.width), @"height" : @(frame.size.height) }];
+	}
+	dict[@"views"] = views;
+	return dict;
+}
+
+- (void)restorePositionsOfHandlesWithDictionary:(NSDictionary *)dictionary
+{
+	if (!dictionary)
+	{
+		return;
+	}
+	NSNumber *handlesCountNumber = dictionary[@"handlesCount"];
+	NSInteger handlesCount = [handlesCountNumber integerValue];
+	ALSplitViewOrientation orientation = (ALSplitViewOrientation)[dictionary[@"orientation"] integerValue];
+	if (orientation != self.orientation)
+	{
+#if ALSPLITVIEW_DEBUG
+		NSLog(@"ALSplitView: restorePositionsOfHandlesWithDictionary: restoring with incorrect orientation!");
+#endif
+		return;
+	}
+	if (handlesCount != [self numberOfHandles])
+	{
+#if ALSPLITVIEW_DEBUG
+		NSLog(@"ALSplitView: restorePositionsOfHandlesWithDictionary: restoring with incorrect handle number!");
+#endif
+		return;
+	}
+	[self removeConstraints:[self constraints]];
+	NSArray *views = dictionary[@"views"];
+	for (NSInteger i = 0; i < handlesCount + 1; i++)
+	{
+		NSView *view = [self subviews][i];
+		NSDictionary *viewDict = views[i];
+		CGFloat x = [viewDict[@"x"] floatValue];
+		CGFloat y = [viewDict[@"y"] floatValue];
+		CGFloat w = [viewDict[@"width"] floatValue];
+		CGFloat h = [viewDict[@"height"] floatValue];
+		NSRect frame = view.frame;
+		if (self.orientation == ALSplitViewOrientationHorizontal)
+		{
+			frame.origin.x = x;
+			frame.size.width = w;
+		}
+		else
+		{
+			frame.origin.y = y;
+			frame.size.height = h;
+		}
+		[view setFrame:frame];
+	}
+	[self addInternalConstraints:nil];
+	[self addSizingConstrants:nil];
+	[self setNeedsDisplay:YES];
 }
 
 #pragma mark - Private
@@ -231,7 +309,6 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)updateSizingContstraintsForHandleIndex:(NSInteger)handleIndex
 {
-	//NSLog(@"updateSizingContstraintsForHandleIndex:%ld", handleIndex);
 	NSMutableArray *constraints = [NSMutableArray array];
 
     NSArray *views = [self subviews];
@@ -356,7 +433,9 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 {
 	if (index >= [self numberOfHandles])
 	{
+#if ALSPLITVIEW_DEBUG
 		NSLog(@"ALSplitView: rectOfHandleAtIndex: index out of boundaries!");
+#endif
 		return NSZeroRect;
 	}
 
@@ -548,7 +627,6 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 - (void)updateConstraints
 {
-	NSLog(@"updateConstraints");
 	[super updateConstraints];
 	if (!self.internalConstraints)
 	{
@@ -591,7 +669,9 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 
 	if (handleIndex != -1)
 	{
-		//NSLog(@"mouseDown: (%f, %f), handleIndex: %ld", location.x, location.y, handleIndex);
+#if ALSPLITVIEW_DEBUG
+		NSLog(@"mouseDown: (%f, %f), handleIndex: %ld", location.x, location.y, handleIndex);
+#endif
 		[self updateSizingContstraintsForHandleIndex:handleIndex];
 
 		NSView *viewAboveDivider = [self subviews][handleIndex];
@@ -621,7 +701,9 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 	if (self.draggingConstraint)
 	{
 		NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-		//NSLog(@"mouseDragged: (%f, %f)", location.x, location.y);
+#if ALSPLITVIEW_DEBUG
+		NSLog(@"mouseDragged: (%f, %f)", location.x, location.y);
+#endif
 		if (self.orientation == ALSplitViewOrientationVertical)
 		{
 			self.draggingConstraint.constant = location.y + self.handleWidth / 2.f;
@@ -630,7 +712,9 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 		{
 			self.draggingConstraint.constant = (self.frame.size.width - location.x + self.handleWidth / 2.f);
 		}
-//		NSLog(@"self.draggingConstraint.constant == %f", self.draggingConstraint.constant);
+#if ALSPLITVIEW_DEBUG
+		NSLog(@"self.draggingConstraint.constant == %f", self.draggingConstraint.constant);
+#endif
 		[self setNeedsDisplay:YES];
 	}
 	else
@@ -643,7 +727,9 @@ static int distanceOfViewWithIndexFromDividerWithIndex(NSInteger viewIndex, NSIn
 {
 	if (self.draggingConstraint)
 	{
-		//NSLog(@"mouseUp");
+#if ALSPLITVIEW_DEBUG
+		NSLog(@"mouseUp");
+#endif
 		[self removeConstraint:self.draggingConstraint];
 		self.draggingConstraint = nil;
 
