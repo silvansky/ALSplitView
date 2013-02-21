@@ -21,6 +21,7 @@ Vertical oriented:
 - on-the-fly properties handling
 - styling handles with background color, background image and handle image
 - minimum and maximum size limits support for subviews
+- save/restore subview sizes with plist-ready NSDictionary
 
 ## Usage example:
 
