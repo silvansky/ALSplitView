@@ -7,18 +7,29 @@
 //
 
 #import "AppDelegate.h"
+#import "AdditionalWindowController.h"
 #import <QuartzCore/QuartzCore.h>
+
+@interface AppDelegate ()
+
+@property (retain) AdditionalWindowController *additionalWindow;
+
+@end
 
 @implementation AppDelegate
 
 - (void)dealloc
 {
+	self.additionalWindow = nil;
 	[super dealloc];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+
+	self.additionalWindow = [[[AdditionalWindowController alloc] initWithWindowNibName:@"AdditionalWindowController"] autorelease];
+
 	[self.imageView setWantsLayer:YES];
 	[self.imageView2 setWantsLayer:YES];
 	[self.imageView3 setWantsLayer:YES];
@@ -104,6 +115,11 @@
 		[self.splitView setMinimumWidth:widthForView forViewAtIndex:i];
 		[self.splitView setMaximumWidth:maximumSizePerView forViewAtIndex:i];
 	}
+}
+
+- (IBAction)onMore:(id)sender
+{
+	[self.additionalWindow showWindow:self];
 }
 
 @end

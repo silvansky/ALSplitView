@@ -23,5 +23,6 @@
 - (IBAction)onAddView:(id)sender;
 - (IBAction)onRemoveView:(id)sender;
 - (IBAction)onAddSizeLimits:(id)sender;
+- (IBAction)onMore:(id)sender;
 
 @end

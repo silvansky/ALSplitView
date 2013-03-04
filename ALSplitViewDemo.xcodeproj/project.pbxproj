@@ -17,6 +17,9 @@
 		C51E4A8616D35C2000F908C3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C51E4A8416D35C2000F908C3 /* MainMenu.xib */; };
 		C51E4A8E16D35C4200F908C3 /* ALSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = C51E4A8D16D35C4200F908C3 /* ALSplitView.m */; };
 		C51E4AA916D3BBAA00F908C3 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C51E4AA816D3BBAA00F908C3 /* dog.jpg */; };
+		C526326016DE3C0D00D954F1 /* AdditionalWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C526325E16DE3C0D00D954F1 /* AdditionalWindowController.m */; };
+		C526326116DE3C0D00D954F1 /* AdditionalWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C526325F16DE3C0D00D954F1 /* AdditionalWindowController.xib */; };
+		C526326216DE3E0C00D954F1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C51E4A9016D3647C00F908C3 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		C51E4A8D16D35C4200F908C3 /* ALSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ALSplitView.m; path = ALSplitView/ALSplitView.m; sourceTree = "<group>"; };
 		C51E4A9016D3647C00F908C3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C51E4AA816D3BBAA00F908C3 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
+		C526325D16DE3C0D00D954F1 /* AdditionalWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalWindowController.h; sourceTree = "<group>"; };
+		C526325E16DE3C0D00D954F1 /* AdditionalWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdditionalWindowController.m; sourceTree = "<group>"; };
+		C526325F16DE3C0D00D954F1 /* AdditionalWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdditionalWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C526326216DE3E0C00D954F1 /* WebKit.framework in Frameworks */,
 				C51E4A7016D35C2000F908C3 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +104,9 @@
 				C51E4A8116D35C2000F908C3 /* AppDelegate.h */,
 				C51E4A8216D35C2000F908C3 /* AppDelegate.m */,
 				C51E4A8416D35C2000F908C3 /* MainMenu.xib */,
+				C526325D16DE3C0D00D954F1 /* AdditionalWindowController.h */,
+				C526325E16DE3C0D00D954F1 /* AdditionalWindowController.m */,
+				C526325F16DE3C0D00D954F1 /* AdditionalWindowController.xib */,
 				C51E4A7616D35C2000F908C3 /* Supporting Files */,
 			);
 			path = ALSplitViewDemo;
@@ -183,6 +193,7 @@
 				C51E4AA916D3BBAA00F908C3 /* dog.jpg in Resources */,
 				C50CFBFD16D4F07500F727C3 /* bg.png in Resources */,
 				C50CFBFE16D4F07500F727C3 /* handle.png in Resources */,
+				C526326116DE3C0D00D954F1 /* AdditionalWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +207,7 @@
 				C51E4A7C16D35C2000F908C3 /* main.m in Sources */,
 				C51E4A8316D35C2000F908C3 /* AppDelegate.m in Sources */,
 				C51E4A8E16D35C4200F908C3 /* ALSplitView.m in Sources */,
+				C526326016DE3C0D00D954F1 /* AdditionalWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
